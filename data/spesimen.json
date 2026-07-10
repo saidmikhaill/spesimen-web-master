@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "nama": "Daun Sirih",
+    "gambar": "img/sirih.png",
+    "deskripsi": "Daun sirih dikenal memiliki sifat antibakteri dan digunakan dalam pengobatan tradisional."
+  },
+  {
+    "id": 2,
+    "nama": "Lidah Buaya",
+    "gambar": "img/lidah-buaya.png",
+    "deskripsi": "Lidah buaya sering digunakan dalam produk perawatan kulit dan penyembuhan luka."
+  },
+  {
+    "id": 3,
+    "nama": "Jahe",
+    "gambar": "img/jahe.png",
+    "deskripsi": "Jahe memiliki sifat menghangatkan dan biasa digunakan untuk meredakan masuk angin."
+  }
+]
