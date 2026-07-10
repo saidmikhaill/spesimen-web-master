@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz Pengetahuan Herbarium</title>
+
+  <!-- 🔤 Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet"/>
+
+  <!-- 🎨 Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+
+  <!-- 🧾 Style Kustom -->
+  <link rel="stylesheet" href="css/style-kuis.css" />
+</head>
+<body class="quiz-page">
+
+  <!-- 🔹 Navbar -->
+  <nav class="navbar navbar-dark " style="background-color: #003B87;">
+    <div class="container d-flex align-items-center">
+      <!-- ⛔ Tombol kembali akan diubah lewat JS -->
+      <a id="btn-back" href="#" class="btn btn-link text-white p-0 me-3">
+  <i class="bi bi-arrow-left"></i> Kembali
+      </a>
+
+      <span class="navbar-text mx-auto fw-semibold text-white">Quiz Pengetahuan Herbarium</span>
+
+      <a href="#" id="btn-next" class="ms-auto btn btn-link text-white d-none">
+  Selanjutnya <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+  </nav>
+
+  <!-- 🔸 Konten Utama -->
+  <div class="container py-5" id="quiz-area">
+    <div class="text-center mb-4">
+      <p class="text-muted" id="quiz-progress">Pertanyaan</p>
+      <h5 class="fw-semibold" id="quiz-question">Soal akan tampil di sini</h5>
+    </div>
+
+    <div class="quiz-options"></div>
+  </div>
+
+  <!-- 🔻 Jika soal kosong -->
+  <div class="container text-center d-none" id="empty-message">
+    <p class="text-danger">Soal belum tersedia untuk spesimen ini.</p>
+  </div>
+
+  <!-- 📦 Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- 📘 Data Soal -->
+  <script src="js/quiz-data.js"></script>
+  <script src="js/kuis.js"></script>
+  <script>
+  
+  // Atur href tombol kembali ke detail spesimen
+  const tombolKembali = document.getElementById("btn-back");
+  if (id && tombolKembali) {
+    tombolKembali.href = `detail.html?id=${id}`;
+  }
+
+</script>
+
+
+  <!-- 📜 Logic Quiz -->
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get('id'), 10);
+
+    const soalSpesimen = quizData[id] || [];
+
+    let currentIndex = 0;
+    let skor = 0;
+
+    const container = document.querySelector(".quiz-options");
+    const questionText = document.getElementById("quiz-question");
+    const progressText = document.getElementById("quiz-progress");
+    const quizArea = document.getElementById("quiz-area");
+    const emptyMessage = document.getElementById("empty-message");
+
+    // 🛠️ Update href tombol kembali secara dinamis
+    document.getElementById("btn-back").href = `detail.html?id=${id}`;
+
+    function tampilkanSoal(index) {
+      const q = soalSpesimen[index];
+      questionText.textContent = q.soal;
+      progressText.textContent = `Pertanyaan ${index + 1} dari ${soalSpesimen.length}`;
+
+      container.innerHTML = "";
+      q.pilihan.forEach((opsi, i) => {
+        const div = document.createElement("div");
+        div.className = "option";
+        div.textContent = `${String.fromCharCode(65 + i)}. ${opsi}`;
+        div.addEventListener("click", () => pilihJawaban(i));
+        container.appendChild(div);
+      });
+    }
+
+    function pilihJawaban(pilihan) {
+      const benar = soalSpesimen[currentIndex].jawaban === pilihan;
+      if (benar) skor++;
+
+      currentIndex++;
+      if (currentIndex < soalSpesimen.length) {
+        tampilkanSoal(currentIndex);
+      } else {
+        window.location.href = `hasil.html?score=${skor}&total=${soalSpesimen.length}`;
+      }
+    }
+
+    // 🧠 Mulai kuis
+    if (soalSpesimen.length > 0) {
+      tampilkanSoal(currentIndex);
+    } else {
+      quizArea.classList.add("d-none");
+      emptyMessage.classList.remove("d-none");
+    }
+  </script>
+</body>
+</html>

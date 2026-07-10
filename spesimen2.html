@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spesimen Herbarium</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- CSS Kustom -->
+  <style>
+    body.daftar-spesimen {
+      background: linear-gradient(160deg, #003B87, #002C66);
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-top: 2rem;
+    }
+
+    .daftar-spesimen h1,
+    .daftar-spesimen p.lead {
+      text-align: center;
+      color: white;
+    }
+
+    .daftar-spesimen .container {
+      padding-bottom: 3rem;
+    }
+
+    .card {
+      border: none;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background-color: white;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card img {
+      height: 200px;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    .card-title {
+      font-weight: 600;
+      color: #003B87;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-text {
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Tombol */
+    .btn-herbal {
+      background-color: #003B87;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 0.5rem 1.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-herbal:hover {
+      background-color: #002C66;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Tombol kembali */
+    .btn-light {
+      font-weight: bold;
+      padding: 0.5rem 1.5rem;
+      border-radius: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      background-color: white;
+      color: #003B87;
+      border: none;
+      margin-bottom: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-light:hover {
+      background-color: #f8f9fa;
+      color: #003B87;
+    }
+
+    /* Grid layout */
+    .herb-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .herb-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="daftar-spesimen">
+  <div class="container">
+    <a href="index.html" class="btn btn-light">
+      <i class="bi bi-arrow-left"></i> Kembali
+    </a>
+
+    <h1>Spesimen Herbarium</h1>
+    <p class="lead">Pilih salah satu tanaman untuk dipelajari lebih lanjut</p>
+
+    <div class="herb-grid" id="herbContainer">
+      <!-- Kartu akan diisi oleh JavaScript -->
+    </div>
+  </div>
+
+  <!-- Modal untuk detail tanaman -->
+  <div class="modal fade" id="plantModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="plantModalLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-4">
+            <img id="modalPlantImage" src="" class="img-fluid rounded" alt="" style="max-height: 250px;">
+          </div>
+          <p><strong>Nama Latin:</strong> <em id="modalPlantLatin"></em></p>
+          <p><strong>Deskripsi:</strong> <span id="modalPlantDesc"></span></p>
+          <p><strong>Manfaat:</strong> <span id="modalPlantBenefits"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-herbal" data-bs-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Data tanaman
+    const plants = [
+      {
+        id: 1,
+        name: "Jahe",
+        latin: "Zingiber officinale",
+        description: "Tanaman rimpang yang telah lama digunakan sebagai rempah-rempah dan bahan obat.",
+        benefits: "Menghangatkan tubuh, meredakan mual, membantu pencernaan, mengurangi nyeri otot.",
+        image: "assets/images/Jahe.png"
+      },
+      {
+        id: 2,
+        name: "Kunyit",
+        latin: "Curcuma longa",
+        description: "Tanaman rimpang dengan warna kuning khas yang mengandung kurkumin.",
+        benefits: "Anti-inflamasi, meningkatkan fungsi hati, membantu pencernaan, antimikroba.",
+        image: "assets/images/Kunyit.png"
+      },
+      {
+        id: 3,
+        name: "Daun Sirih",
+        latin: "Piper betle",
+        description: "Daun yang mengandung minyak atsiri dengan banyak khasiat kesehatan.",
+        benefits: "Antiseptik alami, menghentikan mimisan, kesehatan mulut, penyembuh luka.",
+        image: "assets/images/Daun-Sirih.png"
+      }
+    ];
+
+    // Render kartu tanaman
+    function renderPlants() {
+      const container = document.getElementById('herbContainer');
+      
+      plants.forEach(plant => {
+        const card = `
+          <div class="card">
+            <img src="${plant.image}" alt="${plant.name}">
+            <div class="card-body">
+              <h5 class="card-title">${plant.name}</h5>
+              <p class="card-text">${plant.description}</p>
+              <button class="btn btn-herbal learn-more" data-id="${plant.id}">
+                Pelajari
+              </button>
+            </div>
+          </div>
+        `;
+        container.innerHTML += card;
+      });
+
+      // Tambahkan event listener untuk tombol
+      document.querySelectorAll('.learn-more').forEach(button => {
+        button.addEventListener('click', function() {
+          const plantId = parseInt(this.getAttribute('data-id'));
+          showPlantDetails(plantId);
+        });
+      });
+    }
+
+    // Tampilkan detail tanaman di modal
+    function showPlantDetails(plantId) {
+      const plant = plants.find(p => p.id === plantId);
+      if (plant) {
+        document.getElementById('plantModalLabel').textContent = plant.name;
+        document.getElementById('modalPlantImage').src = plant.image;
+        document.getElementById('modalPlantImage').alt = plant.name;
+        document.getElementById('modalPlantLatin').textContent = plant.latin;
+        document.getElementById('modalPlantDesc').textContent = plant.description;
+        document.getElementById('modalPlantBenefits').textContent = plant.benefits;
+        
+        const modal = new bootstrap.Modal(document.getElementById('plantModal'));
+        modal.show();
+      }
+    }
+
+    // Inisialisasi saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', renderPlants);
+  </script>
+</body>
+</html>

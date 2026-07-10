@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Detail Spesimen</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+  <!-- CSS Kustom -->
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="bg-primary text-white">
+
+  <div class="container py-5">
+    <div id="detail-spesimen" class="text-center">
+      <!-- Konten detail spesimen akan ditampilkan oleh JavaScript -->
+    </div>
+
+    <!-- Tombol kembali -->
+    <div class="text-center mt-4">
+      <a href="spesimen.html" class="btn btn-light">
+        <i class="bi bi-arrow-left"></i> Kembali ke Daftar
+      </a>
+    </div>
+  </div>
+
+  <!-- Data spesimen -->
+  <script src="js/data.js"></script>
+  <script>
+    // Ambil ID dari URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = parseInt(urlParams.get('id'));
+
+    // Cari spesimen berdasarkan ID
+    const spesimen = spesimenData.find(item => item.id === id);
+
+    // Elemen tujuan
+    const detail = document.getElementById('detail-spesimen');
+
+    // Jika spesimen ditemukan, tampilkan
+    if (spesimen) {
+      detail.innerHTML = `
+        <img src="assets/images/${spesimen.gambar}" class="img-fluid rounded mb-4" alt="${spesimen.nama}" width="300">
+        <h1 class="fw-bold">${spesimen.nama}</h1>
+        <p class="lead">${spesimen.deskripsi}</p>
+      `;
+    } else {
+      // Jika tidak ditemukan
+      detail.innerHTML = `
+        <div class="alert alert-danger" role="alert">
+          Spesimen tidak ditemukan.
+        </div>
+      `;
+    }
+  </script>
+
+</body>
+</html>
