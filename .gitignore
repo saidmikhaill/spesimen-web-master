@@ -1,0 +1,15 @@
+# Mengabaikan file sampah dari Sistem Operasi Windows dan Mac
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Mengabaikan folder pengaturan dari Text Editor (seperti VS Code)
+.vscode/
+.idea/
+
+# Mengabaikan file log (catatan error dari sistem)
+*.log
+npm-debug.log*
+
+# (Opsional) Jika nanti kamu menggunakan Node.js untuk package manager
+node_modules/
